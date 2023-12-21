@@ -1,0 +1,42 @@
+<html>
+<head>
+</head>
+
+<body>
+  <table id="prefectures"></table>
+</body>
+<script>
+  (() => {
+  // XMLHttpRequest オブジェクトを作成
+  let xhr = new XMLHttpRequest();
+  // URL GET-リクエスト
+  xhr.open('GET', 'json/prefectures.json');
+  // リクエスト送信
+  xhr.send();
+  xhr.onload = function() {
+    if (xhr.status == 200) { // HTTP ステータス(200=正常)
+      // 受信正常時の処理
+      const table = document.getElementById('prefectures');
+      const tbody = table.createTBody();
+  
+      let prefList = JSON.parse(xhr.responseText);
+      for (let pref in prefList) {
+        const row = tbody.insertRow(-1);
+        const cell_id = row.insertCell(-1);
+        const cell_name = row.insertCell(-1);
+  
+        // セルにテキストノードを追加
+        let text_id = document.createTextNode(prefList[pref].id);
+        cell_id.appendChild(text_id);
+        let text_name = document.createTextNode(prefList[pref].name);
+        cell_name.appendChild(text_name);
+      
+      }
+    } else {
+      // エラー時の処理
+      alert(`Error ${xhr.status}: ${xhr.statusText}`);
+   }
+  };
+  })();
+  </script>
+</html>
